@@ -17,7 +17,7 @@ const Root = (props: IRootProps) => {
     });
 
     return subscription;
-  }, [props]);
+  }, []);
 
   const deleteContact = (id) => {
     deleteContactById(id);
