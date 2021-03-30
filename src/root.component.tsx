@@ -22,7 +22,7 @@ const Root = (props: IRootProps) => {
     return () => {
       props.eventer.unsubscribe(subscription);
     };
-  }, []);
+  }, [props.eventer]);
 
   const deleteContact = (id) => {
     deleteContactById(id);
