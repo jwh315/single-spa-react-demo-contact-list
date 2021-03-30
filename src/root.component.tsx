@@ -8,15 +8,20 @@ const Root = (props: IRootProps) => {
   const [contacts, setContacts] = useState(fetchContacts);
 
   useEffect(() => {
-    const subscription = props.subscribe("CONTACT_ADDED", (msg, data) => {
-      if (data) {
-        addContact(data);
+    const subscription = props.eventer.subscribe(
+      "CONTACT_ADDED",
+      (msg, data) => {
+        if (data) {
+          addContact(data);
 
-        setContacts(fetchContacts());
+          setContacts(fetchContacts());
+        }
       }
-    });
+    );
 
-    return subscription;
+    return () => {
+      props.eventer.unsubscribe(subscription);
+    };
   }, []);
 
   const deleteContact = (id) => {
@@ -44,13 +49,15 @@ const Root = (props: IRootProps) => {
   return (
     <section className="px-2 ">
       <table className="shadow-lg bg-white text-black w-full">
-        <tr>
-          <th className="bg-blue-100 border text-left px-8 py-4">Name</th>
-          <th className="bg-blue-100 border text-left px-8 py-4">Email</th>
-          <th className="bg-blue-100 border text-left px-8 py-4">Phone</th>
-          <th className="bg-blue-100 border text-left px-8 py-4">Actions</th>
-        </tr>
-        {contactList}
+        <thead>
+          <tr>
+            <th className="bg-blue-100 border text-left px-8 py-4">Name</th>
+            <th className="bg-blue-100 border text-left px-8 py-4">Email</th>
+            <th className="bg-blue-100 border text-left px-8 py-4">Phone</th>
+            <th className="bg-blue-100 border text-left px-8 py-4">Actions</th>
+          </tr>
+        </thead>
+        <tbody>{contactList}</tbody>
       </table>
     </section>
   );
